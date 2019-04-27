@@ -1,17 +1,23 @@
 package com.backbase.android.weatherapp.CitiesListActivity;
 
+import java.util.List;
+
+/**
+ * Created by Sam on 27/04/2019.
+ * MVP contract for CityActivity
+ */
 
 public interface City
 {
     interface Model
     {
-        void getAboutInfo();
+        void getCitiesInfo();
     }
 
     interface Presenter
     {
-        void getAboutInfo();
-        void onSuccess(CityInfo aboutInfo);
+        void getCitiesInfo();
+        void onSuccess(List<CityInfo> citiesInfo);
         void onFail();
     }
 
