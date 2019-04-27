@@ -1,16 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/aboutActivityParentVG"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.backbase.android.weatherapp.AboutActivity">
+    tools:context="com.backbase.android.weatherapp.AboutCompanyActivity.AboutActivity">
 
     <LinearLayout
+        android:id="@+id/infoContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/infoContainer"
-        android:visibility="gone"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Company name: " />
+
+            <TextView
+                android:id="@+id/companyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Backbase" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Company address: " />
+
+            <TextView
+                android:id="@+id/companyAdress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Backbase" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Company cityName: " />
+
+            <TextView
+                android:id="@+id/companyCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Backbase" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Company postal: " />
+
+            <TextView
+                android:id="@+id/companypostal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Backbase" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About: " />
+
+            <TextView
+                android:id="@+id/aboutInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Backbase" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cityInformation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
@@ -18,17 +122,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Company name: "/>
+                android:text="@string/str_city" />
 
             <TextView
+                android:id="@+id/cityName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/companyName"
-                tools:text="Backbase" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -37,18 +139,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Company address: "/>
+                android:text="@string/str_country" />
 
             <TextView
+                android:id="@+id/countryName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/companyAdress"
-                tools:text="Backbase" />
-
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
@@ -56,75 +155,34 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Company cityName: "/>
+                android:text="@string/str_coordinates" />
 
             <TextView
+                android:id="@+id/coordinates"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/companyCity"
-                tools:text="Backbase" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Company postal: "/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/companypostal"
-                tools:text="Backbase" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="About: "/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/aboutInfo"
-                tools:text="Backbase" />
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:id="@+id/progressBar"/>
+        android:visibility="gone" />
 
     <TextView
+        android:id="@+id/errorView"
+        style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Loading Failed"
-        android:visibility="gone"
-        style="@style/TextAppearance.AppCompat.Medium"
         android:layout_centerInParent="true"
-        android:id="@+id/errorView"/>
+        android:text="Loading Failed"
+        android:visibility="gone" />
 
 
 </RelativeLayout>
