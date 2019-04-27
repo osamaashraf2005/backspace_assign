@@ -7,11 +7,12 @@ import java.util.List;
  * MVP contract for CityActivity
  */
 
-public interface City
+public interface ICitiesContract
 {
     interface Model
     {
         void getCitiesInfo();
+        void stop();
     }
 
     interface Presenter
@@ -23,11 +24,8 @@ public interface City
 
     interface View
     {
-        void setCompanyName(String companyName);
-        void setCompanyAddress(String companyAddress);
-        void setCompanyPostalCode(String postalCode);
-        void setCompanyCity(String companyCity);
-        void setAboutInfo(String info);
+        void loadEmptyScreen();
+        void loadCitiesScene(List<CityInfo> cityInfos);
         void showError();
         void showProgress();
         void hideProgress();

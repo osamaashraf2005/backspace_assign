@@ -26,8 +26,8 @@ public class ApplicationStateData extends Application
         applicationStateData = this;
     }
 
-    public static ApplicationStateData getInstance()
-    {
+    public static synchronized ApplicationStateData getInstance() {
         return applicationStateData;
     }
+
 }
