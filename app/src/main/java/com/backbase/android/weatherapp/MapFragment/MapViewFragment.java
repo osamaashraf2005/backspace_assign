@@ -1,16 +1,17 @@
 package com.backbase.android.weatherapp.MapFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.backbase.android.weatherapp.AboutCompanyActivity.AboutActivity;
 import com.backbase.android.weatherapp.CitiesListActivity.CityInfo;
 import com.backbase.android.weatherapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -35,14 +36,6 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
     }
 
-//    @Override
-//    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
-//    {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        MapFragment mapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.activity_fragment_view);
-//    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -65,6 +58,16 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback
         }
 
         mMapView.getMapAsync(this);
+
+        rootView.findViewById(R.id.btnAbout).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent aboutIntent = new Intent(getActivity(), AboutActivity.class);
+                startActivity(aboutIntent);
+            }
+        });
 
         return rootView;
     }
@@ -113,5 +116,10 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback
         {
             Toast.makeText(getContext(), R.string.error_msg, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void aboutClicked(View view)
+    {
+        Toast.makeText(getContext(), "Some one clicked me", Toast.LENGTH_SHORT).show();
     }
 }

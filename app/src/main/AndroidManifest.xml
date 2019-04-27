@@ -31,8 +31,8 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".testMap.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:name=".AboutCompanyActivity.AboutActivity"
+            android:label="@string/title_activity_about"/>
         <activity
             android:name=".CitiesListActivity.CitiesActivity"
             android:configChanges="orientation|keyboardHidden"

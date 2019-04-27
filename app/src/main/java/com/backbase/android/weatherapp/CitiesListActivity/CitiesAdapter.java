@@ -1,9 +1,9 @@
 package com.backbase.android.weatherapp.CitiesListActivity;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -12,24 +12,31 @@ import com.backbase.android.weatherapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.MyViewHolder> implements Filterable
 {
-    private Context context;
     private List<CityInfo> citiesList;
     private List<CityInfo> citiesListFiltered;
     private CitiesAdapterListener listener;
 
+    private TreeMap<String, CityInfo> citiesTreeMap;
+
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
         public TextView name, coordinates;
+        public Button btnInfo;
 
         public MyViewHolder(View view)
         {
             super(view);
             name = view.findViewById(R.id.name);
+            btnInfo = view.findViewById(R.id.btnInfo);
+
             coordinates = view.findViewById(R.id.coordinates);
 
             view.setOnClickListener(new View.OnClickListener()
@@ -41,15 +48,24 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.MyViewHold
                     listener.onCitySelected(citiesListFiltered.get(getAdapterPosition()));
                 }
             });
+
+            btnInfo.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    listener.onCityInfoSelected(citiesListFiltered.get(getAdapterPosition()));
+                }
+            });
         }
     }
 
 
-    public CitiesAdapter(Context context, List<CityInfo> citiesList, CitiesAdapterListener listener)
+    public CitiesAdapter(List<CityInfo> citiesList, TreeMap<String, CityInfo> citiesTreeMap, CitiesAdapterListener listener)
     {
-        this.context = context;
         this.listener = listener;
         this.citiesList = citiesList;
+        this.citiesTreeMap = citiesTreeMap;
         this.citiesListFiltered = citiesList;
     }
 
@@ -86,19 +102,16 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.MyViewHold
             {
                 String charString = charSequence.toString();
                 if (charString.isEmpty())
-                {
                     citiesListFiltered = citiesList;
-                } else
+                else
                 {
+                    /* Using subMap method for using the benefit of O(LogN) complexity for search */
+                    SortedMap<String, CityInfo> subMap = citiesTreeMap.subMap(charString, charString + Character.MAX_VALUE);
+
                     List<CityInfo> filteredList = new ArrayList<>();
-                    for (CityInfo row : citiesList)
-                    {
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for city name
-//                        if (row.getCityName().toLowerCase().contains(charString.toLowerCase()) || row.getPhone().contains(charSequence))
-                        if (row.getCityName().toLowerCase().contains(charString.toLowerCase()))
-                            filteredList.add(row);
-                    }
+
+                    for (Map.Entry<String, CityInfo> entry : subMap.entrySet())
+                        filteredList.add(entry.getValue());
 
                     citiesListFiltered = filteredList;
                 }
@@ -120,5 +133,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.MyViewHold
     public interface CitiesAdapterListener
     {
         void onCitySelected(CityInfo cityInfo);
+
+        void onCityInfoSelected(CityInfo cityInfo);
     }
 }

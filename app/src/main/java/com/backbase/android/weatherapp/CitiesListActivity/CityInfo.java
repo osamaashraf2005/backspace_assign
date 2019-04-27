@@ -60,7 +60,7 @@ public class CityInfo implements Serializable
         this.coordinate = coordinate;
     }
 
-    public class Coordinate
+    public class Coordinate implements Serializable
     {
         @SerializedName("lat")
         private double lat;

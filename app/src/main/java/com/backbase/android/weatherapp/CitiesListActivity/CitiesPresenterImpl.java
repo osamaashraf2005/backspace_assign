@@ -5,6 +5,7 @@ import android.os.Handler;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.TreeMap;
 
 import androidx.annotation.NonNull;
 
@@ -37,7 +38,7 @@ public class CitiesPresenterImpl implements ICitiesContract.Presenter
     }
 
     @Override
-    public void onSuccess(List<CityInfo> citiesInfo) //Not using SortedList because we are not adding/removing items frequently
+    public void onSuccess(List<CityInfo> citiesInfo, TreeMap<String, CityInfo> stringCityInfoTreeMap) //Not using SortedList because we are not adding/removing items frequently
     {
         ICitiesContract.View citiesViewImpl = citiesView.get();
 
@@ -47,7 +48,7 @@ public class CitiesPresenterImpl implements ICitiesContract.Presenter
 
             if (citiesInfo != null && citiesInfo.size() > 0)
             {
-                citiesViewImpl.loadCitiesScene(citiesInfo);
+                citiesViewImpl.loadCitiesScene(citiesInfo, stringCityInfoTreeMap);
             } else
             {
                 citiesViewImpl.loadEmptyScreen();

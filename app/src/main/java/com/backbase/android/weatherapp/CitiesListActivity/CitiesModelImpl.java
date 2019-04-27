@@ -13,9 +13,8 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.TreeMap;
 
 import androidx.annotation.NonNull;
 
@@ -70,6 +69,7 @@ public class CitiesModelImpl implements ICitiesContract.Model
         private final ICitiesContract.Presenter presenter;
         private final ICitiesContract.View view;
 
+        private TreeMap<String, CityInfo> stringCityInfoTreeMap = new TreeMap<>();
         private final WeakReference<Context> context;
 
         public InitialTask(Context context, ICitiesContract.Presenter presenter, ICitiesContract.View view)
@@ -102,6 +102,12 @@ public class CitiesModelImpl implements ICitiesContract.Model
 //                        return city1.getCityName().toLowerCase().compareTo(city2.getCityName().toLowerCase());
 //                    }
 //                });
+
+                /* Making the city name and city info tree map at the app loading because
+                   "Loading time of the app is not so important." */
+
+                for (CityInfo cityInfo : cities)
+                    stringCityInfoTreeMap.put(cityInfo.getCityName().toLowerCase(), cityInfo);
             }
 
             return cities;
@@ -129,7 +135,7 @@ public class CitiesModelImpl implements ICitiesContract.Model
 
             if (cityInfos != null && cityInfos.size() > 0)
             {
-                presenter.onSuccess(cityInfos);
+                presenter.onSuccess(cityInfos, stringCityInfoTreeMap);
             } else
             {
                 presenter.onFail();

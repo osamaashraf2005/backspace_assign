@@ -2,6 +2,7 @@ package com.backbase.android.weatherapp.CitiesListActivity;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.backbase.android.weatherapp.AboutCompanyActivity.AboutActivity;
 import com.backbase.android.weatherapp.MapFragment.MapViewFragment;
 import com.backbase.android.weatherapp.R;
 import com.backbase.android.weatherapp.ui.CitiesDividerItemDecoration;
@@ -18,6 +20,7 @@ import com.backbase.android.weatherapp.ui.UIUtils;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeMap;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -35,16 +38,16 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
     private static final String TAG = makeLogTag(CitiesActivity.class);
     public static final String CITY_INFO_KEY = "city_info_key";
 
-    private CitiesPresenterImpl mPresenter;
+    CitiesPresenterImpl mPresenter;
 
+    private MapViewFragment mapFragment;
+
+    private CitiesAdapter mAdapter;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TextView tvLoading;
     private SearchView searchView;
 
-    private CitiesAdapter mAdapter;
-
-    private MapViewFragment mapFragment;
 
     private boolean mapShowing;
 
@@ -69,11 +72,11 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
     }
 
     @Override
-    public void loadCitiesScene(List<CityInfo> cities)
+    public void loadCitiesScene(List<CityInfo> cities, TreeMap<String, CityInfo> stringCityInfoTreeMap)
     {
         LOGD(TAG, "No of cities loaded: " + cities.size());
 
-        mAdapter = new CitiesAdapter(this, cities, this);
+        mAdapter = new CitiesAdapter(cities, stringCityInfoTreeMap, this);
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -83,9 +86,17 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
         showMapFragment(cityInfo);
     }
 
+    @Override
+    public void onCityInfoSelected(CityInfo cityInfo)
+    {
+        Intent aboutIntent = new Intent(this, AboutActivity.class);
+        startActivity(aboutIntent);
+    }
+
     private void showMapFragment(CityInfo cityInfo)
     {
-        getSupportActionBar().hide();
+        if (getSupportActionBar() != null)
+            getSupportActionBar().hide();
         mapShowing = true;
         mapFragment = new MapViewFragment();
 
@@ -98,8 +109,9 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
 
     private void removeMapFragment()
     {
+        if (getSupportActionBar() != null)
+            getSupportActionBar().show();
         mapShowing = false;
-        getSupportActionBar().show();
         getSupportFragmentManager().beginTransaction().remove(mapFragment).commit();
     }
 
@@ -123,6 +135,7 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
         tvLoading.setVisibility(View.GONE);
     }
 
+    // Showing the Search Menu options
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -166,8 +179,8 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
                                     @Override
                                     public void run()
                                     {
-                                        LOGD(TAG, "Running Query: " + query);
-                                        mAdapter.getFilter().filter(query);
+                                        LOGD(TAG, "Running Query: " + query.toLowerCase());
+                                        mAdapter.getFilter().filter(query.toLowerCase());
                                     }
                                 });
                             }
@@ -178,6 +191,7 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
         return true;
     }
 
+    // Handling the back press
     @Override
     public void onBackPressed()
     {
@@ -191,19 +205,22 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
             if (!searchView.isIconified())
             {
                 searchView.setIconified(true);
-                return;
             }
         }
     }
 
+    //Initializing UI Components
     private void initUIComponents()
     {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // toolbar fancy stuff
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle(R.string.toolbar_title);
+        if (getSupportActionBar() != null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setTitle(R.string.toolbar_title);
+        }
 
         ViewGroup mainContent = findViewById(R.id.mainContent);
         recyclerView = mainContent.findViewById(R.id.recycler_view);
