@@ -48,7 +48,6 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
     private TextView tvLoading;
     private SearchView searchView;
 
-
     private boolean mapShowing;
 
     @Override
@@ -96,8 +95,8 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
 
     private void showMapFragment(CityInfo cityInfo)
     {
-        if (getSupportActionBar() != null)
-            getSupportActionBar().hide();
+//        if (getSupportActionBar() != null)
+//            getSupportActionBar().hide();
         mapShowing = true;
         mapFragment = new MapViewFragment();
         mapFragment.setArguments(getCityBundle(cityInfo));
@@ -114,8 +113,8 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
 
     private void removeMapFragment()
     {
-        if (getSupportActionBar() != null)
-            getSupportActionBar().show();
+//        if (getSupportActionBar() != null)
+//            getSupportActionBar().show();
         mapShowing = false;
         getSupportFragmentManager().beginTransaction().remove(mapFragment).commit();
     }
@@ -155,12 +154,16 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
         // listening to search query text change
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
         {
+            // Adding delay for standard 350ms for cancelling the previous search if next button hit
             private Timer timer = new Timer();
-            private final long DELAY = 1000; // milliseconds
+            private final long DELAY = 350; // milliseconds
 
             @Override
             public boolean onQueryTextSubmit(String query)
             {
+                if (mapShowing)
+                    removeMapFragment();
+
                 // filter recycler view when query submitted
                 LOGD(TAG, "Submitting Query: " + query);
                 mAdapter.getFilter().filter(query);
@@ -170,6 +173,9 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
             @Override
             public boolean onQueryTextChange(final String query)
             {
+                if (mapShowing)
+                    removeMapFragment();
+
                 // filter recycler view when text is changed
                 timer.cancel();
                 timer = new Timer();
@@ -200,16 +206,19 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
     @Override
     public void onBackPressed()
     {
+        // Removing Map Fragment if visible
         if (mapShowing)
         {
             removeMapFragment();
         } else
         {
-            super.onBackPressed();
             // close search view on back button pressed
             if (!searchView.isIconified())
             {
                 searchView.setIconified(true);
+            } else
+            {
+                super.onBackPressed();
             }
         }
     }

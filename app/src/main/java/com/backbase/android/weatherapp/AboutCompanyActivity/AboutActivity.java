@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.backbase.android.weatherapp.CitiesListActivity.CityInfo;
 import com.backbase.android.weatherapp.R;
+import com.backbase.android.weatherapp.ui.UIUtils;
 
 import java.util.Objects;
 
@@ -57,6 +58,8 @@ public class AboutActivity extends AppCompatActivity implements About.View
 
         progressBar = findViewById(R.id.progressBar);
         errorView = findViewById(R.id.errorView);
+
+        UIUtils.whiteNotificationBar(getWindow(), infoContainer);
 
         if (getIntent().hasExtra(CITY_INFO_KEY))
         {
