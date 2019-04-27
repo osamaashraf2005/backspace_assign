@@ -18,6 +18,8 @@ import static com.backbase.android.weatherapp.CitiesListActivity.CitiesActivity.
 
 public class AboutActivity extends AppCompatActivity implements About.View
 {
+    android.view.View aboutActivityParentVG;
+
     private android.view.View infoContainer;
     private TextView companyName;
     private TextView companyAddress;
@@ -40,10 +42,11 @@ public class AboutActivity extends AppCompatActivity implements About.View
         setContentView(R.layout.activity_about);
         AboutPresenterImpl aboutPresenter = new AboutPresenterImpl(this, this);
 
-
-        infoContainer = findViewById(R.id.infoContainer);
+        aboutActivityParentVG = findViewById(R.id.aboutActivityParentVG);
+        UIUtils.whiteNotificationBar(getWindow(), aboutActivityParentVG);
 
         /* Re-factoring find view by id by checking into infoContainer View Group*/
+        infoContainer = aboutActivityParentVG.findViewById(R.id.infoContainer);
         companyName = infoContainer.findViewById(R.id.companyName);
         companyAddress = infoContainer.findViewById(R.id.companyAdress);
         companyPostal = infoContainer.findViewById(R.id.companypostal);
@@ -51,7 +54,7 @@ public class AboutActivity extends AppCompatActivity implements About.View
         aboutInfo = infoContainer.findViewById(R.id.aboutInfo);
         /*-------------------------------------------------------------------------*/
 
-        cityInformation = findViewById(R.id.cityInformation);
+        cityInformation = aboutActivityParentVG.findViewById(R.id.cityInformation);
         tvCityName = cityInformation.findViewById(R.id.cityName);
         tvCountryName = cityInformation.findViewById(R.id.countryName);
         tvCoordinates = cityInformation.findViewById(R.id.coordinates);
@@ -59,14 +62,16 @@ public class AboutActivity extends AppCompatActivity implements About.View
         progressBar = findViewById(R.id.progressBar);
         errorView = findViewById(R.id.errorView);
 
-        UIUtils.whiteNotificationBar(getWindow(), infoContainer);
-
         if (getIntent().hasExtra(CITY_INFO_KEY))
         {
             CityInfo cityInfo = (CityInfo) Objects.requireNonNull(getIntent().getExtras()).get(CITY_INFO_KEY);
             aboutPresenter.getAboutInfo(cityInfo);
+            getSupportActionBar().setTitle(R.string.toolbar_title_about_city);
         } else
+        {
+            getSupportActionBar().setTitle(R.string.toolbar_title_about_company);
             aboutPresenter.getAboutInfo();
+        }
     }
 
     @Override
