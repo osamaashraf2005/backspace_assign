@@ -1,13 +1,12 @@
 package com.backbase.android.weatherapp.AboutCompanyActivity;
 
 import android.content.Context;
-import android.os.Handler;
 
 import com.backbase.android.weatherapp.CitiesListActivity.CityInfo;
 
-import androidx.annotation.NonNull;
-
 import java.lang.ref.WeakReference;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Backbase R&D B.V on 28/06/2018.
@@ -32,14 +31,8 @@ public class AboutPresenterImpl implements About.Presenter
 
         aboutViewImpl.showProgress();
 
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                aboutModel.getAboutInfo();
-            }
-        }, 1000);
+        aboutModel.getAboutInfo();
+
     }
 
     @Override
@@ -49,14 +42,7 @@ public class AboutPresenterImpl implements About.Presenter
 
         aboutViewImpl.showProgress();
 
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                aboutModel.getAboutInfo(cityInfo);
-            }
-        }, 1000);
+        aboutModel.getAboutInfo(cityInfo);
     }
 
     @Override
