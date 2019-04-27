@@ -1,35 +1,58 @@
 package com.backbase.android.weatherapp.CitiesListActivity;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.backbase.android.weatherapp.MapFragment.MapViewFragment;
 import com.backbase.android.weatherapp.R;
 import com.backbase.android.weatherapp.ui.CitiesDividerItemDecoration;
 import com.backbase.android.weatherapp.ui.UIUtils;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CitiesActivity extends AppCompatActivity implements ICitiesContract.View
+import static com.backbase.android.weatherapp.util.LogUtil.LOGD;
+import static com.backbase.android.weatherapp.util.LogUtil.makeLogTag;
+
+public class CitiesActivity extends AppCompatActivity implements ICitiesContract.View, CitiesAdapter.CitiesAdapterListener
 {
-    private static final String FILE_PATH = "";
+    private static final String TAG = makeLogTag(CitiesActivity.class);
+    public static final String CITY_INFO_KEY = "city_info_key";
 
     private CitiesPresenterImpl mPresenter;
 
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+    private TextView tvLoading;
+    private SearchView searchView;
 
-    private ArrayList<CityInfo> citiesList;
+    private CitiesAdapter mAdapter;
+
+    private MapViewFragment mapFragment;
+
+    private boolean mapShowing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_cities_list);
 
         mPresenter = new CitiesPresenterImpl(this, this);
@@ -48,27 +71,129 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
     @Override
     public void loadCitiesScene(List<CityInfo> cities)
     {
-//        citiesList = new ArrayList<>();
-//        mAdapter = new ContactsAdapter(this, contactList, this);
-//        recyclerView.setAdapter(mAdapter);
+        LOGD(TAG, "No of cities loaded: " + cities.size());
+
+        mAdapter = new CitiesAdapter(this, cities, this);
+        recyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onCitySelected(CityInfo cityInfo)
+    {
+        showMapFragment(cityInfo);
+    }
+
+    private void showMapFragment(CityInfo cityInfo)
+    {
+        getSupportActionBar().hide();
+        mapShowing = true;
+        mapFragment = new MapViewFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(CITY_INFO_KEY, cityInfo);
+        mapFragment.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.activity_fragment_view, mapFragment).commit();
+    }
+
+    private void removeMapFragment()
+    {
+        mapShowing = false;
+        getSupportActionBar().show();
+        getSupportFragmentManager().beginTransaction().remove(mapFragment).commit();
     }
 
     @Override
     public void showError()
     {
-
+        Toast.makeText(this, R.string.err_loading_cities, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showProgress()
     {
-
+        progressBar.setVisibility(View.VISIBLE);
+        tvLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress()
     {
+        progressBar.setVisibility(View.GONE);
+        tvLoading.setVisibility(View.GONE);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        // listening to search query text change
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
+            private Timer timer = new Timer();
+            private final long DELAY = 1000; // milliseconds
+
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                // filter recycler view when query submitted
+                LOGD(TAG, "Submitting Query: " + query);
+                mAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(final String query)
+            {
+                // filter recycler view when text is changed
+                timer.cancel();
+                timer = new Timer();
+                timer.schedule(
+                        new TimerTask()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                runOnUiThread(new Runnable()
+                                {
+                                    @Override
+                                    public void run()
+                                    {
+                                        LOGD(TAG, "Running Query: " + query);
+                                        mAdapter.getFilter().filter(query);
+                                    }
+                                });
+                            }
+                        }, DELAY);
+                return false;
+            }
+        });
+        return true;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if (mapShowing)
+        {
+            removeMapFragment();
+        } else
+        {
+            super.onBackPressed();
+            // close search view on back button pressed
+            if (!searchView.isIconified())
+            {
+                searchView.setIconified(true);
+                return;
+            }
+        }
     }
 
     private void initUIComponents()
@@ -77,11 +202,13 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
         setSupportActionBar(toolbar);
 
         // toolbar fancy stuff
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle(R.string.toolbar_title);
 
-        recyclerView = findViewById(R.id.recycler_view);
-
+        ViewGroup mainContent = findViewById(R.id.mainContent);
+        recyclerView = mainContent.findViewById(R.id.recycler_view);
+        progressBar = mainContent.findViewById(R.id.toolbarprogress);
+        tvLoading = mainContent.findViewById(R.id.tvLoading);
         // white background notification bar
         UIUtils.whiteNotificationBar(getWindow(), recyclerView);
 

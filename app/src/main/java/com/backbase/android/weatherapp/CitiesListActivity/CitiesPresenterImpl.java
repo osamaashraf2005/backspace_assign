@@ -37,7 +37,7 @@ public class CitiesPresenterImpl implements ICitiesContract.Presenter
     }
 
     @Override
-    public void onSuccess(List<CityInfo> citiesInfo)
+    public void onSuccess(List<CityInfo> citiesInfo) //Not using SortedList because we are not adding/removing items frequently
     {
         ICitiesContract.View citiesViewImpl = citiesView.get();
 

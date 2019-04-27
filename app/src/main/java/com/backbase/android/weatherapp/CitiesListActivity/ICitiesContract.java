@@ -25,7 +25,7 @@ public interface ICitiesContract
     interface View
     {
         void loadEmptyScreen();
-        void loadCitiesScene(List<CityInfo> cityInfos);
+        void loadCitiesScene(List<CityInfo> cityInfos);//Not using SortedList because we are not adding/removing items frequently
         void showError();
         void showProgress();
         void hideProgress();

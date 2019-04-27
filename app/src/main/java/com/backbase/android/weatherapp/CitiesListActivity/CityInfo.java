@@ -1,15 +1,23 @@
 package com.backbase.android.weatherapp.CitiesListActivity;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 /**
  * Created by Sam on 27/04/2019.
  * DTO representing cityInfo object
  */
 
-public class CityInfo
+public class CityInfo implements Serializable
 {
+    @SerializedName("_id")
     private long id;
+    @SerializedName("country")
     private String countryName;
+    @SerializedName("name")
     private String cityName;
+    @SerializedName("coord")
     private Coordinate coordinate;
 
     public long getId()
@@ -52,29 +60,37 @@ public class CityInfo
         this.coordinate = coordinate;
     }
 
-    private class Coordinate
+    public class Coordinate
     {
-        private long lat;
-        private long lon;
+        @SerializedName("lat")
+        private double lat;
+        @SerializedName("lon")
+        private double lon;
 
-        public long getLat()
+        public double getLat()
         {
             return lat;
         }
 
-        public void setLat(long lat)
+        public void setLat(double lat)
         {
             this.lat = lat;
         }
 
-        public long getLon()
+        public double getLon()
         {
             return lon;
         }
 
-        public void setLon(long lon)
+        public void setLon(double lon)
         {
             this.lon = lon;
+        }
+
+        @Override
+        public String toString()
+        {
+            return String.valueOf(lat + " , " + lon);
         }
     }
 }

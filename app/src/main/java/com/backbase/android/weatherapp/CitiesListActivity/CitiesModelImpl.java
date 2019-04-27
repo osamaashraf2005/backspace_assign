@@ -13,6 +13,8 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -85,19 +87,24 @@ public class CitiesModelImpl implements ICitiesContract.Model
 
             String citiesInfoJson = getAboutInfoFromAssets();
 
-            if (citiesInfoJson != null && !citiesInfoJson.isEmpty())
-            {
-                List<CityInfo> cityInfos = parseCitiesInfo(citiesInfoJson);
+            final List<CityInfo> cities = (citiesInfoJson != null && !citiesInfoJson.isEmpty()) ? parseCitiesInfo(citiesInfoJson) : null;
 
-                if (cityInfos != null)
-                {
-                    presenter.onSuccess(cityInfos);
-                } else
-                {
-                    presenter.onFail();
-                }
+            if (cities != null)
+            {
+                //Sorting Cities
+                //Since there was a condition on the test isntruction "Loading time of the app is not so important."
+                // so sorting it through collections.sort
+//                Collections.sort(cities, new Comparator<CityInfo>()
+//                {
+//                    @Override
+//                    public int compare(CityInfo city1, CityInfo city2)
+//                    {
+//                        return city1.getCityName().toLowerCase().compareTo(city2.getCityName().toLowerCase());
+//                    }
+//                });
             }
-            return null;
+
+            return cities;
         }
 
         @Override
@@ -119,9 +126,13 @@ public class CitiesModelImpl implements ICitiesContract.Model
         protected void onPostExecute(List<CityInfo> cityInfos)
         {
             super.onPostExecute(cityInfos);
-            if (cityInfos != null)
+
+            if (cityInfos != null && cityInfos.size() > 0)
             {
                 presenter.onSuccess(cityInfos);
+            } else
+            {
+                presenter.onFail();
             }
         }
 

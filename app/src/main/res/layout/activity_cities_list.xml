@@ -21,6 +21,13 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include
+        android:id="@+id/mainContent"
+        layout="@layout/content_main" />
+
+    <FrameLayout
+        android:id="@+id/activity_fragment_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
