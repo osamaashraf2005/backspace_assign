@@ -90,6 +90,7 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
     public void onCityInfoSelected(CityInfo cityInfo)
     {
         Intent aboutIntent = new Intent(this, AboutActivity.class);
+        aboutIntent.putExtra(CITY_INFO_KEY, cityInfo);
         startActivity(aboutIntent);
     }
 
@@ -99,12 +100,16 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
             getSupportActionBar().hide();
         mapShowing = true;
         mapFragment = new MapViewFragment();
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(CITY_INFO_KEY, cityInfo);
-        mapFragment.setArguments(bundle);
+        mapFragment.setArguments(getCityBundle(cityInfo));
 
         getSupportFragmentManager().beginTransaction().add(R.id.activity_fragment_view, mapFragment).commit();
+    }
+
+    private Bundle getCityBundle(CityInfo cityInfo)
+    {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(CITY_INFO_KEY, cityInfo);
+        return bundle;
     }
 
     private void removeMapFragment()
