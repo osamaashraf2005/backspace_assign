@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.backbase.android.weatherapp.AboutCompanyActivity.AboutActivity;
 import com.backbase.android.weatherapp.MapFragment.MapViewFragment;
 import com.backbase.android.weatherapp.R;
+import com.backbase.android.weatherapp.data.ApplicationStateData;
 import com.backbase.android.weatherapp.ui.CitiesDividerItemDecoration;
 import com.backbase.android.weatherapp.ui.UIUtils;
 
@@ -46,6 +48,7 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TextView tvLoading;
+    private TextView hintText;
     private SearchView searchView;
 
     private boolean mapShowing;
@@ -61,7 +64,10 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
 
         initUIComponents();
 
-        mPresenter.getCitiesInfo();
+        if (ApplicationStateData.getInstance().isDataCached())
+            loadCitiesScene(ApplicationStateData.getInstance().getCities(), ApplicationStateData.getInstance().getStringCityInfoTreeMap());
+        else
+            mPresenter.getCitiesInfo();
     }
 
     @Override
@@ -95,8 +101,8 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
 
     private void showMapFragment(CityInfo cityInfo)
     {
-//        if (getSupportActionBar() != null)
-//            getSupportActionBar().hide();
+        UIUtils.hideKeyboard(this);
+        showHideHintText(false);
         mapShowing = true;
         mapFragment = new MapViewFragment();
         mapFragment.setArguments(getCityBundle(cityInfo));
@@ -113,9 +119,8 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
 
     private void removeMapFragment()
     {
-//        if (getSupportActionBar() != null)
-//            getSupportActionBar().show();
         mapShowing = false;
+        showHideHintText(true);
         getSupportFragmentManager().beginTransaction().remove(mapFragment).commit();
     }
 
@@ -123,6 +128,14 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
     public void showError()
     {
         Toast.makeText(this, R.string.err_loading_cities, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showHideHintText(boolean show)
+    {
+        // Hint text will be null in portrait mode, because there is no need for that
+        if (hintText != null)
+            hintText.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -240,6 +253,8 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
         recyclerView = mainContent.findViewById(R.id.recycler_view);
         progressBar = mainContent.findViewById(R.id.toolbarprogress);
         tvLoading = mainContent.findViewById(R.id.tvLoading);
+
+        hintText = findViewById(R.id.hintText);
         // white background notification bar
         UIUtils.whiteNotificationBar(getWindow(), recyclerView);
 
@@ -247,5 +262,15 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new CitiesDividerItemDecoration(this, DividerItemDecoration.VERTICAL, 36));
+
+        recyclerView.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                UIUtils.hideKeyboard(CitiesActivity.this);
+                return false;
+            }
+        });
     }
 }

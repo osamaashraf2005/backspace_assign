@@ -2,6 +2,11 @@ package com.backbase.android.weatherapp.data;
 
 import android.app.Application;
 
+import com.backbase.android.weatherapp.CitiesListActivity.CityInfo;
+
+import java.util.List;
+import java.util.TreeMap;
+
 import static com.backbase.android.weatherapp.util.LogUtil.LOGD;
 import static com.backbase.android.weatherapp.util.LogUtil.makeLogTag;
 
@@ -16,6 +21,11 @@ public class ApplicationStateData extends Application
 
     private static ApplicationStateData applicationStateData;
 
+    /* Caching data for not loading them again */
+    private List<CityInfo> cities;
+    private TreeMap<String, CityInfo> stringCityInfoTreeMap;
+    private boolean isDataCached;
+
     @Override
     public void onCreate()
     {
@@ -26,7 +36,38 @@ public class ApplicationStateData extends Application
         applicationStateData = this;
     }
 
-    public static synchronized ApplicationStateData getInstance() {
+    public List<CityInfo> getCities()
+    {
+        return cities;
+    }
+
+    public void setCities(List<CityInfo> cities)
+    {
+        this.cities = cities;
+    }
+
+    public TreeMap<String, CityInfo> getStringCityInfoTreeMap()
+    {
+        return stringCityInfoTreeMap;
+    }
+
+    public void setStringCityInfoTreeMap(TreeMap<String, CityInfo> stringCityInfoTreeMap)
+    {
+        this.stringCityInfoTreeMap = stringCityInfoTreeMap;
+    }
+
+    public void setDataCached(boolean dataCached)
+    {
+        isDataCached = dataCached;
+    }
+
+    public boolean isDataCached()
+    {
+        return isDataCached;
+    }
+
+    public static synchronized ApplicationStateData getInstance()
+    {
         return applicationStateData;
     }
 

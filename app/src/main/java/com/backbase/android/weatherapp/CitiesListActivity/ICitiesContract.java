@@ -28,6 +28,7 @@ public interface ICitiesContract
         void loadEmptyScreen();
         void loadCitiesScene(List<CityInfo> cityInfos, TreeMap<String, CityInfo> stringCityInfoTreeMap);//Not using SortedList because we are not adding/removing items frequently
         void showError();
+        void showHideHintText(boolean show);
         void showProgress();
         void hideProgress();
     }

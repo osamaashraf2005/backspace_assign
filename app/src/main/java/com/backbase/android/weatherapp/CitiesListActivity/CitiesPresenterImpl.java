@@ -27,14 +27,7 @@ public class CitiesPresenterImpl implements ICitiesContract.Presenter
 
         citiesViewImpl.showProgress();
 
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                citiesModel.getCitiesInfo();
-            }
-        }, 1000);
+        citiesModel.getCitiesInfo();
     }
 
     @Override

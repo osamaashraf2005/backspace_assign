@@ -16,4 +16,5 @@
     <string name="about_company">About Company</string>
     <string name="toolbar_title_about_company">About Company</string>
     <string name="toolbar_title_about_city">City Information</string>
+    <string name="empty_map_msg">Tap on city and see the magic :)</string>
 </resources>

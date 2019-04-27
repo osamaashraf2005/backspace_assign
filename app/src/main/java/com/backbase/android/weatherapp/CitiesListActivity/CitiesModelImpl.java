@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.backbase.android.weatherapp.data.ApplicationStateData;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -108,6 +109,10 @@ public class CitiesModelImpl implements ICitiesContract.Model
 
                 for (CityInfo cityInfo : cities)
                     stringCityInfoTreeMap.put(cityInfo.getCityName().toLowerCase(), cityInfo);
+
+                ApplicationStateData.getInstance().setCities(cities);
+                ApplicationStateData.getInstance().setStringCityInfoTreeMap(stringCityInfoTreeMap);
+                ApplicationStateData.getInstance().setDataCached(true);
             }
 
             return cities;
