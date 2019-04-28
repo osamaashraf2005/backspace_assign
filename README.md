@@ -14,6 +14,9 @@ Approach to solve the search problem:
 Other important Assumptions/Decision:
 ------------------------------------
 * Using AboutActivity for Showing "About Company" as well as "About City", so that there is no need third screen
+* Not used Android Architecture Components, as restricted in instructionsi doc
+* Used androidx to support previous plateforms
+
 
 
 UI Test Cases:
@@ -21,6 +24,8 @@ UI Test Cases:
 * Test Cases for Search provided under the androidTest with the name: SearchCitiesTest
 * Test Cases for Information Screen UI Test provided under the androidTest with the name: InformationScreenTest
 
-Debug APK location:
+
+
+Sample Debug APK location:
 ------------------------------------
 * app/debug
