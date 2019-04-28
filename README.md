@@ -7,6 +7,7 @@ Approach to solve the search problem:
 * Created a TreeMap<String, CityInfo> at the app loading because as per instructions "Loading time of the app is not so important"
 * TreeMap will provide subMap method for search which provides O(LogN) complexity
 * Adding standard delay of 350ms before the search query executes (to prevent the useless query search if next key pressed) for optimized search
+* It can be more optimized, but considering the development time was limited I'm making this solutions as best tradeoff between time and performance :)
 
 
 
