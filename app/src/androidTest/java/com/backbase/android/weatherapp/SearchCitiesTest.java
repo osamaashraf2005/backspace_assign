@@ -5,6 +5,7 @@ import android.widget.EditText;
 
 import com.backbase.android.weatherapp.CitiesListActivity.CitiesActivity;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Created by Sam on 28/04/2019.
- * SearchCitiesTest class for test cases as mentioned in the test instruction document
+ * SearchCitiesTest class for search test cases as mentioned in the test instruction document
  */
 
 @RunWith(AndroidJUnit4.class)
@@ -39,18 +40,36 @@ public class SearchCitiesTest
     @Rule
     public ActivityTestRule<CitiesActivity> citiesActivityTestRule = new ActivityTestRule<>(CitiesActivity.class, true, true);
 
-    private final static String city1 = "Amsterdam";
-    private final static String expected_result_city1 = "Amsterdam, US";
+    private String city1;
+    private String expected_result_city1;
 
-    private final static String city2 = "Sydney";
-    private final static String expected_result_city2 = "Sydney, AU";
+    private String city2;
+    private String expected_result_city2;
 
-    private final static String city3 = "Doha";
-    private final static String expected_result_city3 = "Doha, QA";
+    private String city3;
+    private String expected_result_city3;
 
-    private final static String wrong_city_name = "Wrong city name";
+    private String wrong_city_name;
 
-    private final static String empty_city = "";
+    private String empty_city;
+
+    @Before
+    public void initValidString()
+    {
+        // Specify a valid string.
+        city1 = "Amsterdam";
+        expected_result_city1 = "Amsterdam, US";
+
+        city2 = "Sydney";
+        expected_result_city2 = "Sydney, AU";
+
+        city3 = "Doha";
+        expected_result_city3 = "Doha, QA";
+
+        wrong_city_name = "Wrong city name";
+
+        empty_city = "";
+    }
 
     /*
     * Method will search different cities and verifying their results
