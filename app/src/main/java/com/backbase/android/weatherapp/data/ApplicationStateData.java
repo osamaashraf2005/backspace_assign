@@ -12,7 +12,7 @@ import static com.backbase.android.weatherapp.util.LogUtil.makeLogTag;
 
 /**
  * Created by Sam on 27/04/2019.
- * Base class to maintaining global application state
+ * Singleton class to maintaining global application state and caching data
  */
 
 public class ApplicationStateData extends Application

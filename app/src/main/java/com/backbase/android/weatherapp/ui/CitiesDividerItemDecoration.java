@@ -13,7 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Created by ravi on 17/11/17.
+ * Created by Sam on 27/04/2019.
+ * CitiesDividerItemDecoration for Recycler Divider Item Decoration
  */
 
 public class CitiesDividerItemDecoration extends RecyclerView.ItemDecoration

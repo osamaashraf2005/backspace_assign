@@ -3,7 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_about">About Activity</string>
     <string name="toolbar_title">Cities</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading Cities...\n\nSince clearly instructed in the test instructions that \"Loading time of the app is not so important\"\nHence taking full advantage of that :)\n\nMight take around 90 seconds (on average computational power device) to fetch, sort, caching and adding cities into tree map data structure for optimized search.</string>
     <string name="action_search">Search</string>
     <string name="title_activity_maps">Map</string>
     <string name="error_msg">Location not found</string>
@@ -17,4 +17,5 @@
     <string name="toolbar_title_about_company">About Company</string>
     <string name="toolbar_title_about_city">City Information</string>
     <string name="empty_map_msg">Tap on city and see the magic :)</string>
+    <string name="no_city_found">No City Found ...</string>
 </resources>
