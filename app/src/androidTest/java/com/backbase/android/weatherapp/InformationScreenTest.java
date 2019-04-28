@@ -2,7 +2,6 @@ package com.backbase.android.weatherapp;
 
 
 import com.backbase.android.weatherapp.AboutCompanyActivity.AboutActivity;
-import com.backbase.android.weatherapp.CitiesListActivity.CitiesActivity;
 
 import org.junit.Before;
 import org.junit.Rule;
