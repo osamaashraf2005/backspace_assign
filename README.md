@@ -18,5 +18,9 @@ Other important Assumptions/Decision:
 
 UI Test Cases:
 ------------------------------------
-Test Cases for Search provided under the androidTest with the name: SearchCitiesTest
-Test Cases for Information Screen UI Test provided under the androidTest with the name: InformationScreenTest
+* Test Cases for Search provided under the androidTest with the name: SearchCitiesTest
+* Test Cases for Information Screen UI Test provided under the androidTest with the name: InformationScreenTest
+
+Debug APK location:
+------------------------------------
+* app/debug
