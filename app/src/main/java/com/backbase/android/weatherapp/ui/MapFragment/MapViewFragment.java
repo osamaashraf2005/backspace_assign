@@ -1,4 +1,4 @@
-package com.backbase.android.weatherapp.MapFragment;
+package com.backbase.android.weatherapp.ui.MapFragment;
 
 import android.content.Intent;
 import android.os.Bundle;

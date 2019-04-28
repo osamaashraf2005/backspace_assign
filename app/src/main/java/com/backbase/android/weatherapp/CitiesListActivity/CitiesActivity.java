@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.backbase.android.weatherapp.AboutCompanyActivity.AboutActivity;
-import com.backbase.android.weatherapp.MapFragment.MapViewFragment;
+import com.backbase.android.weatherapp.ui.MapFragment.MapViewFragment;
 import com.backbase.android.weatherapp.R;
 import com.backbase.android.weatherapp.data.ApplicationStateData;
 import com.backbase.android.weatherapp.ui.CitiesDividerItemDecoration;

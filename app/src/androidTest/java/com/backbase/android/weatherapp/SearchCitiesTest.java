@@ -39,44 +39,60 @@ public class SearchCitiesTest
     @Rule
     public ActivityTestRule<CitiesActivity> citiesActivityTestRule = new ActivityTestRule<>(CitiesActivity.class, true, true);
 
+    private final static String city1 = "Amsterdam";
+    private final static String expected_result_city1 = "Amsterdam, US";
+
+    private final static String city2 = "Sydney";
+    private final static String expected_result_city2 = "Sydney, AU";
+
+    private final static String city3 = "Doha";
+    private final static String expected_result_city3 = "Doha, QA";
+
+    private final static String wrong_city_name = "Wrong city name";
+
+    private final static String empty_city = "";
+
+    /*
+    * Method will search different cities and verifying their results
+    * */
     @Test
     public void searchCity_Activity()
     {
-        delay(2000);
+        delay(3000);
 
         // Click on search icon - we can find it by the r.Id.
         onView(withId(R.id.action_search)).perform(click());
+        delay(1500);
 
         // Type city1 in search
-        onView(isAssignableFrom(EditText.class)).perform(typeText("Amsterdam"), pressKey(KeyEvent.KEYCODE_ENTER));
+        onView(isAssignableFrom(EditText.class)).perform(typeText(city1), pressKey(KeyEvent.KEYCODE_ENTER));
         delay(1500);
         // Matching the search result
-        onView(new RecyclerViewMatcher(R.id.recycler_view).atPositionOnView(0, R.id.name)).check(matches(withText("Amsterdam, US")));
+        onView(new RecyclerViewMatcher(R.id.recycler_view).atPositionOnView(0, R.id.name)).check(matches(withText(expected_result_city1)));
 
         delay(1500);
 
         // Type city2 in search
-        onView(isAssignableFrom(EditText.class)).perform(replaceText("Sydney"));
+        onView(isAssignableFrom(EditText.class)).perform(replaceText(city2));
         delay(2000);
         // Matching the search result
-        onView(new RecyclerViewMatcher(R.id.recycler_view).atPositionOnView(0, R.id.name)).check(matches(withText("Sydney, AU")));
+        onView(new RecyclerViewMatcher(R.id.recycler_view).atPositionOnView(0, R.id.name)).check(matches(withText(expected_result_city2)));
 
+        delay(1500);
+
+        // Type city3 in search
+        onView(isAssignableFrom(EditText.class)).perform(replaceText(city3));
+        delay(1500);
+        // Matching the search result
+        onView(new RecyclerViewMatcher(R.id.recycler_view).atPositionOnView(0, R.id.name)).check(matches(withText(expected_result_city3)));
         delay(1500);
 
         // Type wrong city name in search
-        onView(isAssignableFrom(EditText.class)).perform(replaceText("Wrong city name"));
+        onView(isAssignableFrom(EditText.class)).perform(replaceText(wrong_city_name));
 
-        delay(1500);
-
-        // Type city4 in search
-        onView(isAssignableFrom(EditText.class)).perform(replaceText("Doha"));
-        delay(1500);
-        // Matching the search result
-        onView(new RecyclerViewMatcher(R.id.recycler_view).atPositionOnView(0, R.id.name)).check(matches(withText("Doha, QA")));
-        delay(1500);
-
+        delay(2500);
         // Removing all inputs from search box so it'll show all cities
-        onView(isAssignableFrom(EditText.class)).perform(replaceText(""));
+        onView(isAssignableFrom(EditText.class)).perform(replaceText(empty_city));
         delay(3000);
     }
 
