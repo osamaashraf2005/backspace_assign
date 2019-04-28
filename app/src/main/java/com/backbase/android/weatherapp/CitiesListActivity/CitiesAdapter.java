@@ -18,6 +18,11 @@ import java.util.TreeMap;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * Created by Sam on 27/04/2019.
+ * CitiesAdapter for binding the data and providing filters
+ */
+
 public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.MyViewHolder> implements Filterable
 {
     private List<CityInfo> citiesList;

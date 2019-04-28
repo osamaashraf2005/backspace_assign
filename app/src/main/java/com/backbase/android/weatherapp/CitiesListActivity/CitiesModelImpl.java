@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.backbase.android.weatherapp.data.ApplicationStateData;
+import com.backbase.android.weatherapp.util.TestUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -14,6 +15,8 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -92,17 +95,21 @@ public class CitiesModelImpl implements ICitiesContract.Model
 
             if (cities != null)
             {
-                //Sorting Cities
-                //Since there was a condition on the test isntruction "Loading time of the app is not so important."
-                // so sorting it through collections.sort
-//                Collections.sort(cities, new Comparator<CityInfo>()
-//                {
-//                    @Override
-//                    public int compare(CityInfo city1, CityInfo city2)
-//                    {
-//                        return city1.getCityName().toLowerCase().compareTo(city2.getCityName().toLowerCase());
-//                    }
-//                });
+                //skipping sorting if running test case
+                if (!new TestUtil().isRunningTest())
+                {
+                    // Sorting Cities
+                    // Since there was a condition on the test instruction "Loading time of the app is not so important."
+                    // so sorting it through collections.sort
+                    Collections.sort(cities, new Comparator<CityInfo>()
+                    {
+                        @Override
+                        public int compare(CityInfo city1, CityInfo city2)
+                        {
+                            return city1.getCityName().toLowerCase().compareTo(city2.getCityName().toLowerCase());
+                        }
+                    });
+                }
 
                 /* Making the city name and city info tree map at the app loading because
                    "Loading time of the app is not so important." */

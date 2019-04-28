@@ -1,4 +1,4 @@
-package com.backbase.android.weatherapp.MapFragment;
+package com.backbase.android.weatherapp.ui.MapFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +24,10 @@ import androidx.fragment.app.Fragment;
 
 import static com.backbase.android.weatherapp.CitiesListActivity.CitiesActivity.CITY_INFO_KEY;
 
+/**
+ * Created by Sam on 27/04/2019.
+ * MapViewFragment for showing city map
+ */
 public class MapViewFragment extends Fragment implements OnMapReadyCallback
 {
     private MapView mMapView;

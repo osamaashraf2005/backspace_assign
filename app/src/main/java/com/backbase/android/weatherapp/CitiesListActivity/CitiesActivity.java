@@ -8,12 +8,11 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.backbase.android.weatherapp.AboutCompanyActivity.AboutActivity;
-import com.backbase.android.weatherapp.MapFragment.MapViewFragment;
+import com.backbase.android.weatherapp.ui.MapFragment.MapViewFragment;
 import com.backbase.android.weatherapp.R;
 import com.backbase.android.weatherapp.data.ApplicationStateData;
 import com.backbase.android.weatherapp.ui.CitiesDividerItemDecoration;
@@ -35,6 +34,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import static com.backbase.android.weatherapp.util.LogUtil.LOGD;
 import static com.backbase.android.weatherapp.util.LogUtil.makeLogTag;
 
+/**
+ * Created by Sam on 27/04/2019.
+ * CitiesActivity class for showing the list of cities information
+ */
+
 public class CitiesActivity extends AppCompatActivity implements ICitiesContract.View, CitiesAdapter.CitiesAdapterListener
 {
     private static final String TAG = makeLogTag(CitiesActivity.class);
@@ -46,7 +50,6 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
 
     private CitiesAdapter mAdapter;
     private RecyclerView recyclerView;
-    private ProgressBar progressBar;
     private TextView tvLoading;
     private TextView hintText;
     private SearchView searchView;
@@ -64,16 +67,15 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
 
         initUIComponents();
 
-        if (ApplicationStateData.getInstance().isDataCached())
+        if (ApplicationStateData.getInstance().isDataCached()) // When the data is already cached
             loadCitiesScene(ApplicationStateData.getInstance().getCities(), ApplicationStateData.getInstance().getStringCityInfoTreeMap());
-        else
+        else // When the data is not cached, fetch
             mPresenter.getCitiesInfo();
     }
 
     @Override
     public void loadEmptyScreen()
     {
-
     }
 
     @Override
@@ -141,14 +143,12 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
     @Override
     public void showProgress()
     {
-        progressBar.setVisibility(View.VISIBLE);
         tvLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress()
     {
-        progressBar.setVisibility(View.GONE);
         tvLoading.setVisibility(View.GONE);
     }
 
@@ -251,7 +251,6 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesContract
 
         ViewGroup mainContent = findViewById(R.id.mainContent);
         recyclerView = mainContent.findViewById(R.id.recycler_view);
-        progressBar = mainContent.findViewById(R.id.toolbarprogress);
         tvLoading = mainContent.findViewById(R.id.tvLoading);
 
         hintText = findViewById(R.id.hintText);

@@ -15,7 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import static com.backbase.android.weatherapp.CitiesListActivity.CitiesActivity.CITY_INFO_KEY;
 
-
+/**
+ * Created by Sam on 27/04/2019.
+ * AboutActivity for showing About Company or About City information
+ */
 public class AboutActivity extends AppCompatActivity implements About.View
 {
     android.view.View aboutActivityParentVG;
